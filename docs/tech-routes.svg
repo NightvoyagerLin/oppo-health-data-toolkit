@@ -1,0 +1,51 @@
+<svg viewBox="0 0 680 620" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>本项目 Frida 路线与上游 LSPosed 路线对比</title>
+<desc>两条路线共同点：都 hook OPPO 健康 App 的 AesGcmAndroidKeyStore 取出 SQLCipher 的 db_key。差异：上游用真机 LSPosed 常驻模块被动 hook 并在手机端解密；本项目用模拟器加 PC 端 Frida 主动调用解密接口，并在电脑端解密。</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<rect x="0" y="0" width="680" height="620" fill="#FFFFFF"/>
+<text x="20" y="26" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#1F2328">共同原理：hook AesGcmAndroidKeyStore 取 db_key（思路来自上游公开文章）</text>
+
+<text x="20" y="52" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#993C1D">上游 foxlesbiao ｜ LSPosed 常驻模块 ｜ 真机 arm64</text>
+<rect x="20" y="62" width="640" height="196" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+
+<rect x="40" y="78" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+<text x="340" y="93" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">真机 root + LSPosed 框架</text>
+<line x1="340" y1="108" x2="340" y2="122" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="122" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+<text x="340" y="137" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">模块常驻注入健康 App 进程</text>
+<line x1="340" y1="152" x2="340" y2="166" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="166" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+<text x="340" y="181" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">被动 hook：enCryptData / deCryptData / openDatabase</text>
+<line x1="340" y1="196" x2="340" y2="210" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="210" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+<text x="340" y="225" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">捕获 db_key（早期误抓 38 位 hw_key → export false）</text>
+
+<text x="20" y="290" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#185FA5">本项目 ｜ PC 端 Frida 动态注入 ｜ 模拟器</text>
+<rect x="20" y="300" width="640" height="300" rx="12" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+
+<rect x="40" y="316" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+<text x="340" y="331" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">模拟器 root + 启动 frida-server</text>
+<line x1="340" y1="346" x2="340" y2="360" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="360" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+<text x="340" y="375" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">PC 端 Frida attach 目标进程</text>
+<line x1="340" y1="390" x2="340" y2="404" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="404" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+<text x="340" y="419" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">主动调用 b() / deCryptData("db_key") 当场解出密钥</text>
+<line x1="340" y1="434" x2="340" y2="448" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="448" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+<text x="340" y="463" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">pull 加密库（含 -wal / -shm + 完整性校验）</text>
+<line x1="340" y1="478" x2="340" y2="492" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="492" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+<text x="340" y="507" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">电脑端 sqlcipher3 解密：候选密钥逐个试开，失败自动换下一个</text>
+<line x1="340" y1="522" x2="340" y2="536" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="536" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+<text x="340" y="551" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">CSV / JSON / SQLite → 12 维报告 + 单文件网页报告</text>
+<line x1="340" y1="566" x2="340" y2="580" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="40" y="580" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+<text x="340" y="595" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">可选：upload_data 传到 Flask 接收端 / MCP</text>
+</svg>

@@ -1,0 +1,26 @@
+# 全量审查修复 L1（2026-09-16）：统一行尾、保护二进制
+# 背景：仓库此前 19 个文本文件为 CRLF、5 个为 LF，混排行尾在不同协作者的
+#   core.autocrlf 设置下会漂移，产生大量 diff 噪音；且 disable_zygisk.sh 一度
+#   因 CRLF 在安卓端无法执行（发布前审计 M1）。此文件一次性归一：
+#   文本文件统一 LF（含 Windows 用户的 checkout），二进制文件禁止任何转换。
+# 注意：修改本文件后，已 checkout 的工作区不会自动变化——如需全量归一，执行：
+#   git add --renormalize .
+
+# 文本：统一 LF
+*.py   text eol=lf
+*.sh   text eol=lf
+*.js   text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+*.txt  text eol=lf
+*.svg  text eol=lf
+LICENSE text eol=lf
+.gitignore text eol=lf
+
+# 二进制：禁止转换（随仓库分发的可执行文件与分卷大文件）
+*.exe   binary
+*.dll   binary
+*.part0 binary
+*.part1 binary
+*.apk   binary
+*.db    binary

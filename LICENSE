@@ -1,0 +1,43 @@
+MIT License
+
+Copyright (c) 2026 NightvoyagerLin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+----------------------------------------------------------------------
+
+Third-party notices / 第三方声明：
+
+This project includes code adapted from foxlesbiao/oppo-health-export
+(MIT License): Copyright (c) foxlesbiao
+  https://github.com/foxlesbiao/oppo-health-export
+
+Design reference article (by the same author):
+  https://foxlesbiao.github.io/blog/posts/hermes/2026-08-19-oppo-health-export-mcp/
+
+The OPPO Health APK is NOT bundled with this repository and is NOT covered
+by this license; it remains the property of its respective owner. Users must
+obtain it themselves from official OPPO channels.
+
+The bundled frida-server binary (distributed as split volumes under dist/ and
+reassembled by tools/rejoin.py) is a third-party binary from the frida project
+(https://github.com/frida/frida) and is NOT covered by this license either;
+see dist/SHA256SUMS.txt for its official checksum.
+Version bundled: 17.17.0 (x86_64). It is distributed under the frida project's
+own upstream license terms — see the COPYING file in the frida repository.

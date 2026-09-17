@@ -1,0 +1,58 @@
+# 个人数据与健康数据 —— 一律不入库
+DB/
+*.db
+*.db-wal
+*.db-shm
+db_key.txt
+server/sink/
+
+# 分析报告与日志（含个人数据）
+*.html
+*.log
+logs/
+cleanup_report.txt
+
+# 截图一律不入库（防止把健康数据截图误提交）。
+# 全量审查修复 L10（2026-09-15）：原先只有 `*.png`，会把将来加入的说明性插图
+#   一并挡掉。此处保留"默认全忽略"的安全取向，只为专门的文档插图目录开一个例外；
+#   需要放图片进 README 时，把图放到 docs/img/ 下即可。
+*.png
+*.jpg
+*.jpeg
+!docs/img/
+!docs/img/*.png
+!docs/img/*.jpg
+!docs/img/*.jpeg
+
+# dist/ 内重组后的大文件本体（分卷 .partN 与校验和随仓库分发）
+dist/frida-server
+
+# 用户自备 / 排障产生的第三方 APK（OPPO 健康、KernelSU 备份等，一律不入库）
+*.apk
+
+# 历史导出目录（旧版风格，可能含个人数据）
+export_*/
+
+# GUI 导出目录（health_export_gui.py 产物，含个人数据；默认落 DB\ 内已被上面覆盖，
+#   此条防"用户手选项目根为导出目录"的边缘场景 —— 第 8 轮审查 P3-3）
+health_export_*/
+
+# Frida 取密钥脚本副本（无敏感数据，但属运行时生成，不入库）
+get_key.js
+
+# 原子写产生的临时文件（异常/强杀时可能残留，一律不入库）
+*.tmp
+
+# Python
+__pycache__/
+*.pyc
+
+# GUI 导出的 JSON/Excel 产物（文件名 health_data_时间戳.json/.xlsx；导出目录
+#   可任选——选到仓库内时 health_export_*/ 规则盖不住这种文件名，盲审实测
+#   health_data_*.json 与 *.xlsx 均 NOT IGNORED，故显式补齐。全列导出含身份列！）
+health_data_*
+*.xlsx
+/csv/
+
+# 系统
+Thumbs.db
