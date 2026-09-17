@@ -1,51 +1,102 @@
-<svg viewBox="0 0 680 620" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
-<title>本项目 Frida 路线与上游 LSPosed 路线对比</title>
-<desc>两条路线共同点：都 hook OPPO 健康 App 的 AesGcmAndroidKeyStore 取出 SQLCipher 的 db_key。差异：上游用真机 LSPosed 常驻模块被动 hook 并在手机端解密；本项目用模拟器加 PC 端 Frida 主动调用解密接口，并在电脑端解密。</desc>
+<svg viewBox="0 0 680 890" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, 'Microsoft YaHei', sans-serif">
+<title>两条技术路线：同一份数据，两条拿到手的路</title>
+<desc>两条路线分叉点：密钥怎么拿。上游 foxlesbiao 用可 ROOT 真机 + LSPosed 常驻模块，被动截获密钥（App 自己开锁时拍下钥匙）；本项目用模拟器 + PC 两段式——模拟器端主动调用解密函数当场解出 db_key 并 adb pull 加密库，PC 端密钥一插解密开箱，导出三格式并生成网页报告。殊途同归：密钥到手，数据落地本地。</desc>
 <defs>
-<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-<path d="M2 1L8 5L2 9" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</marker>
-</defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="680" height="890" fill="#F8FAFC"/>
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#0F172A">两条技术路线：同一份数据，两条拿到手的路</text>
 
-<rect x="0" y="0" width="680" height="620" fill="#FFFFFF"/>
-<text x="20" y="26" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#1F2328">共同原理：hook AesGcmAndroidKeyStore 取 db_key（思路来自上游公开文章）</text>
+  <rect x="140" y="44" width="400" height="58" rx="8" fill="#E2E8F0" stroke="#64748B" stroke-width="1.4"/>
+  <text x="340" y="64" text-anchor="middle" font-size="12.5" fill="#1E293B">手表数据都存在「健康」App 的加密数据库里</text>
+  <text x="340" y="82" text-anchor="middle" font-size="12.5" fill="#1E293B">想打开它，必须先拿到密钥 db_key（藏在 App 内部、还被加密）</text>
 
-<text x="20" y="52" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#993C1D">上游 foxlesbiao ｜ LSPosed 常驻模块 ｜ 真机 arm64</text>
-<rect x="20" y="62" width="640" height="196" rx="12" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+  <line x1="340" y1="102" x2="340" y2="118" stroke="#475569" stroke-width="1.6"/>
+  <rect x="90" y="118" width="500" height="40" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+  <text x="340" y="135" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#92400E">分叉点：密钥怎么拿？</text>
+  <text x="340" y="151" text-anchor="middle" font-size="12" fill="#92400E">大佬有可 ROOT 的真机；我没有真机，只有电脑和模拟器</text>
 
-<rect x="40" y="78" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
-<text x="340" y="93" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">真机 root + LSPosed 框架</text>
-<line x1="340" y1="108" x2="340" y2="122" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="122" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
-<text x="340" y="137" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">模块常驻注入健康 App 进程</text>
-<line x1="340" y1="152" x2="340" y2="166" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="166" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
-<text x="340" y="181" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">被动 hook：enCryptData / deCryptData / openDatabase</text>
-<line x1="340" y1="196" x2="340" y2="210" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="210" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
-<text x="340" y="225" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">捕获 db_key（早期误抓 38 位 hw_key → export false）</text>
+  <line x1="230" y1="158" x2="180" y2="192" stroke="#EA580C" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="450" y1="158" x2="505" y2="192" stroke="#0891B2" stroke-width="1.6" marker-end="url(#ar)"/>
 
-<text x="20" y="290" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="14" font-weight="500" fill="#185FA5">本项目 ｜ PC 端 Frida 动态注入 ｜ 模拟器</text>
-<rect x="20" y="300" width="640" height="300" rx="12" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+  <text x="175" y="180" text-anchor="middle" font-size="14.5" font-weight="bold" fill="#C2410C">大佬的路线（真机）</text>
+  <text x="175" y="206" text-anchor="middle" font-size="11.5" fill="#B45309">关键词：装监控，蹲守</text>
+  <text x="505" y="180" text-anchor="middle" font-size="14.5" font-weight="bold" fill="#0E7490">我的路线（模拟器 + PC）</text>
+  <text x="505" y="206" text-anchor="middle" font-size="11.5" fill="#0E7490">关键词：先拿钥匙搬箱子，再开箱做分析</text>
 
-<rect x="40" y="316" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
-<text x="340" y="331" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">模拟器 root + 启动 frida-server</text>
-<line x1="340" y1="346" x2="340" y2="360" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="360" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
-<text x="340" y="375" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">PC 端 Frida attach 目标进程</text>
-<line x1="340" y1="390" x2="340" y2="404" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="404" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
-<text x="340" y="419" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">主动调用 b() / deCryptData("db_key") 当场解出密钥</text>
-<line x1="340" y1="434" x2="340" y2="448" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="448" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
-<text x="340" y="463" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">pull 加密库（含 -wal / -shm + 完整性校验）</text>
-<line x1="340" y1="478" x2="340" y2="492" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="492" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
-<text x="340" y="507" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">电脑端 sqlcipher3 解密：候选密钥逐个试开，失败自动换下一个</text>
-<line x1="340" y1="522" x2="340" y2="536" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="536" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
-<text x="340" y="551" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">CSV / JSON / SQLite → 12 维报告 + 单文件网页报告</text>
-<line x1="340" y1="566" x2="340" y2="580" stroke="#57606A" stroke-width="1.5" marker-end="url(#arrow)"/>
-<rect x="40" y="580" width="600" height="30" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
-<text x="340" y="595" text-anchor="middle" dominant-baseline="central" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12.5" fill="#1F2328">可选：upload_data 传到 Flask 接收端 / MCP</text>
+  <rect x="25" y="218" width="300" height="52" rx="8" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.4"/>
+  <text x="175" y="240" text-anchor="middle" font-size="12.5" fill="#1E293B">一台可 ROOT 的真机（Magisk / LSPosed）</text>
+  <text x="175" y="258" text-anchor="middle" font-size="12" fill="#475569">刷好框架，随时能注入 App</text>
+  <line x1="175" y1="270" x2="175" y2="286" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="25" y="288" width="300" height="52" rx="8" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.4"/>
+  <text x="175" y="310" text-anchor="middle" font-size="12.5" fill="#1E293B">LSPosed 模块常驻注入健康 App</text>
+  <text x="175" y="328" text-anchor="middle" font-size="12" fill="#475569">模块一直在后台蹲着</text>
+  <line x1="175" y1="340" x2="175" y2="356" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="25" y="358" width="300" height="82" rx="8" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.8"/>
+  <text x="175" y="380" text-anchor="middle" font-size="13" font-weight="bold" fill="#C2410C">被动截获 = 在锁边装监控</text>
+  <text x="175" y="398" text-anchor="middle" font-size="12" fill="#1E293B">App 自己去加密/解密的时候，</text>
+  <text x="175" y="416" text-anchor="middle" font-size="12" fill="#1E293B">在旁边把钥匙拍下来</text>
+  <text x="175" y="434" text-anchor="middle" font-size="11" fill="#B45309">（早期还误拍过别的钥匙，后加过滤）</text>
+  <line x1="175" y1="440" x2="175" y2="456" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="25" y="458" width="300" height="52" rx="8" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.4"/>
+  <text x="175" y="480" text-anchor="middle" font-size="12.5" fill="#1E293B">锁一开，数据整箱倒出来</text>
+  <text x="175" y="498" text-anchor="middle" font-size="12" fill="#475569">真机方案到此闭环</text>
+
+  <rect x="355" y="218" width="300" height="20" rx="6" fill="#ECFEFF" stroke="#0891B2" stroke-width="1"/>
+  <text x="505" y="232" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#0E7490">📍 模拟器端（密钥和数据的老家）</text>
+
+  <rect x="355" y="244" width="300" height="48" rx="8" fill="#ECFEFF" stroke="#0891B2" stroke-width="1.4"/>
+  <text x="505" y="264" text-anchor="middle" font-size="12.5" fill="#1E293B">① 电脑装雷电模拟器（不需要真机）</text>
+  <text x="505" y="282" text-anchor="middle" font-size="12" fill="#475569">密钥和加密库的老家</text>
+  <line x1="505" y1="292" x2="505" y2="306" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="355" y="308" width="300" height="48" rx="8" fill="#ECFEFF" stroke="#0891B2" stroke-width="1.4"/>
+  <text x="505" y="328" text-anchor="middle" font-size="12.5" fill="#1E293B">② 模拟器里跑 frida-server</text>
+  <text x="505" y="346" text-anchor="middle" font-size="12" fill="#475569">PC 端 Frida 直接连上 App 进程</text>
+  <line x1="505" y1="356" x2="505" y2="370" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="355" y="372" width="300" height="68" rx="8" fill="#ECFEFF" stroke="#0891B2" stroke-width="1.8"/>
+  <text x="505" y="394" text-anchor="middle" font-size="13" font-weight="bold" fill="#0E7490">③ 主动出击 = 替 App 按开锁键</text>
+  <text x="505" y="412" text-anchor="middle" font-size="12" fill="#1E293B">PC 端 Frida 命令解密函数：当场解出 db_key</text>
+  <text x="505" y="430" text-anchor="middle" font-size="12" fill="#0E7490">密钥以一小串字符传回电脑 ✓</text>
+  <line x1="505" y1="440" x2="505" y2="454" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="355" y="456" width="300" height="48" rx="8" fill="#ECFEFF" stroke="#0891B2" stroke-width="1.4"/>
+  <text x="505" y="476" text-anchor="middle" font-size="12.5" fill="#1E293B">④ adb pull：把加密库整个搬回电脑</text>
+  <text x="505" y="494" text-anchor="middle" font-size="12" fill="#0E7490">数据本体在这一步离开模拟器 ✓</text>
+
+  <rect x="355" y="512" width="300" height="20" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/>
+  <text x="505" y="526" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#166534">📍 PC 端（电脑上开箱做分析）</text>
+
+  <rect x="355" y="538" width="300" height="48" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+  <text x="505" y="558" text-anchor="middle" font-size="12.5" fill="#1E293B">⑤ 两样东西到齐 → 解密：密钥一插箱子开</text>
+  <text x="505" y="576" text-anchor="middle" font-size="12" fill="#475569">101 张表的数据全部摊开，随便查随便读</text>
+  <line x1="505" y1="586" x2="505" y2="600" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="355" y="602" width="300" height="44" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+  <text x="505" y="620" text-anchor="middle" font-size="12.5" fill="#1E293B">⑥ 导出：转存三格式</text>
+  <text x="505" y="638" text-anchor="middle" font-size="12" fill="#475569">CSV（Excel 能开）/ JSON / 类型化 SQLite</text>
+  <line x1="505" y1="646" x2="505" y2="660" stroke="#475569" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="355" y="662" width="300" height="44" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+  <text x="505" y="682" text-anchor="middle" font-size="12.5" fill="#1E293B">⑦ 生成网页报告</text>
+  <text x="505" y="700" text-anchor="middle" font-size="12" fill="#475569">单文件 HTML：四时间窗口 × 六模块，双击就能看</text>
+
+  <line x1="175" y1="510" x2="230" y2="740" stroke="#16A34A" stroke-width="1.6" marker-end="url(#ar)"/>
+  <line x1="505" y1="706" x2="450" y2="740" stroke="#16A34A" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <rect x="90" y="743" width="500" height="52" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.4"/>
+  <text x="340" y="765" text-anchor="middle" font-size="13" font-weight="bold" fill="#166534">殊途同归：密钥到手 → 数据落地本地</text>
+  <text x="340" y="785" text-anchor="middle" font-size="12" fill="#166534">之后想怎么分析就怎么分析</text>
+
+  <rect x="40" y="815" width="600" height="50" rx="8" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+  <text x="340" y="835" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#334155">一句话总结两种"拿钥匙"的方式</text>
+  <text x="340" y="855" text-anchor="middle" font-size="12" fill="#334155">大佬：在真机的锁边装监控，等 App 自己开锁时拍下钥匙（被动，省事但要真机）　我：模拟器里解出密钥，PC 上开箱分析（主动，没真机也能跑）</text>
+
+  <text x="340" y="884" text-anchor="middle" font-size="11" fill="#94A3B8">注：密钥是"一串字符"传回电脑（很小的文字），加密库是"整个文件"搬过来（几十 MB）——两样都到齐，电脑才能开箱　　左：foxlesbiao　右：NightvoyagerLin</text>
 </svg>
