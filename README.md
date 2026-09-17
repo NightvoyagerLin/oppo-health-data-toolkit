@@ -197,4 +197,4 @@ python tools\rejoin.py
 
 特别感谢 [foxlesbiao/oppo-health-export](https://github.com/foxlesbiao/oppo-health-export) 大佬，文章为本项目提供了前期铺垫，由于本人没有可 ROOT 的手机，由此衍生了本项目。踩了许多坑，希望手册中的「必坑清单」能够帮助到使用本项目的用户。
 
-本工具仅用于导出和分析**使用者本人**的健康数据以辅助自我管理；**许可证为 MIT，不限制他人使用与商用**。项目由 [@NightvoyagerLin](https://github.com/NightvoyagerLin) 独立维护，属个人学习与研究；本项目上线前经过多轮 AI 审查，已解决大部分问题，如有错漏欢迎提交 Issue。
+本工具仅用于导出和分析**使用者本人**的健康数据以辅助自我管理；**许可证为 MIT，不限制他人使用与商用**。项目由 [@NightvoyagerLin](https://github.com/NightvoyagerLin) 独立维护，属个人学习与研究；本项目上线前经过多轮 AI 审查，已解决大部分问题，如有错漏欢迎提交 Issues。
